@@ -67,6 +67,8 @@ export default {
           ok = r.ok && upstream != null;
         } catch {}
       }
+      // 如果用户明确打开 Cloud Mode，则标记原始数据可能出云
+      const rawDataLeftCloud = mode === "cloud";
       const data = ok ? upstream : mock;
       const maskName = (s: string) => (s && s.length > 1 ? s[0] + "*" : s || "*");
       const maskBirth = (s: string) => (s && s.length >= 4 ? s.slice(0, 4) + "****" : s || "****");
@@ -79,7 +81,7 @@ export default {
       const fields = ["身份证", "姓名", "地址"]; 
       const status = {
         location: "Edge Node (Asia)",
-        rawDataLeftCloud: mode === "cloud",
+        rawDataLeftCloud,
         executedOnEdge: true,
         elapsedMs: Date.now() - t0,
         fieldsDetected: fields,
@@ -116,4 +118,3 @@ export default {
     return json({ error: "Not Found" }, { status: 404 });
   },
 };
-

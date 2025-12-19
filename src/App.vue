@@ -79,21 +79,21 @@ const downloadJson = () => {
   <div class="container">
     <div class="header">
       <h1>Edge Privacy Gateway</h1>
-      <p>在数据产生第一跳完成隐私保护</p>
+      <p class="subtitle">在数据产生第一跳完成隐私保护</p>
       <div class="modes">
-        <button :class="['mode', mode==='edge'?'on':'']" @click="mode='edge'">Edge Privacy Mode ON</button>
-        <button :class="['mode', mode==='cloud'?'on':'']" @click="mode='cloud'">Cloud Mode</button>
+        <button :class="['pill', mode==='edge'?'on':'']" @click="mode='edge'">Edge Privacy Mode ON</button>
+        <button :class="['pill', mode==='cloud'?'on':'']" @click="mode='cloud'">Cloud Mode</button>
       </div>
       <p v-if="mode==='cloud'" class="warn">⚠ Cloud Mode：数据可能上传至中心云，仅用于对比展示</p>
     </div>
 
     <div class="section">
       <h2>① 数据输入区</h2>
-      <div class="panel">
+      <div class="card">
         <div class="row">
           <input type="file" accept="image/*" @change="pickFile" />
           <span class="or">或</span>
-          <textarea v-model="base64" placeholder="粘贴 Base64" rows="3"></textarea>
+          <textarea v-model="base64" placeholder="粘贴 Base64" rows="4"></textarea>
         </div>
         <div class="row">
           <label><input type="radio" value="face" v-model="side" /> 正面</label>
@@ -105,18 +105,18 @@ const downloadJson = () => {
 
     <div class="section">
       <h2>② Edge 执行状态</h2>
-      <div class="panel status" v-if="status">
-        <div>🟢 执行位置：{{ status.location }}</div>
-        <div>🟢 原始数据是否出云：{{ status.rawDataLeftCloud ? '是' : '否' }}</div>
-        <div>🟢 OCR & 脱敏执行：边缘完成</div>
-        <div>🟢 执行耗时：{{ status.elapsedMs }} ms</div>
-        <div>🟢 隐私字段识别：{{ (status.fieldsDetected||[]).join(' / ') }}</div>
+      <div class="card" v-if="status">
+        <div class="status-item"><span class="dot green"></span>执行位置：{{ status.location }}</div>
+        <div class="status-item"><span class="dot green"></span>原始数据是否出云：{{ status.rawDataLeftCloud ? '是' : '否' }}</div>
+        <div class="status-item"><span class="dot green"></span>OCR & 脱敏执行：边缘完成</div>
+        <div class="status-item"><span class="dot green"></span>执行耗时：{{ status.elapsedMs }} ms</div>
+        <div class="status-item"><span class="dot green"></span>隐私字段识别：{{ (status.fieldsDetected||[]).join(' / ') }}</div>
       </div>
     </div>
 
     <div class="section">
       <h2>③ 识别 & 脱敏结果</h2>
-      <div class="panel" v-if="result">
+      <div class="card" v-if="result">
         <div v-for="item in maskedView" :key="item.k" class="kv"><span>{{ item.k }}：</span><span>{{ item.v }}</span></div>
       </div>
       <div class="actions" v-if="result">
@@ -128,7 +128,7 @@ const downloadJson = () => {
 
     <div class="section">
       <h2>④ Edge Gateway 接口说明</h2>
-      <div class="panel code">
+      <div class="card code">
         <div>POST /api/ocr</div>
         <pre>{
   "image": "base64...",
@@ -141,23 +141,26 @@ const downloadJson = () => {
 </template>
 
 <style scoped>
-.container { max-width: 900px; margin: 0 auto; padding: 24px; font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,"Microsoft YaHei"; }
-.header { text-align: center; margin-bottom: 16px; }
-.header h1 { margin: 0; font-size: 28px; }
-.modes { margin-top: 12px; display: flex; gap: 8px; justify-content: center; }
-.mode { padding: 8px 12px; border: 1px solid #ccc; background: #f6f6f6; cursor: pointer; }
-.mode.on { background: #2ecc71; color: #fff; border-color: #2ecc71; }
-.warn { color: #d35400; font-size: 12px; }
-.section { margin-top: 20px; }
-.panel { border: 1px solid #e0e0e0; border-radius: 8px; padding: 12px; }
-.row { display: flex; align-items: center; gap: 8px; }
-textarea { flex: 1; width: 100%; }
-.or { color: #888; }
-.primary { margin-top: 10px; padding: 8px 12px; background: #409eff; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
-.status div { margin: 4px 0; }
-.kv { display: flex; gap: 6px; padding: 4px 0; }
-.actions { display: flex; gap: 8px; margin-top: 8px; }
+.container { max-width: 980px; margin: 0 auto; padding: 32px 24px; font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,"Microsoft YaHei"; color: #2c3e50; }
+.header { text-align: center; margin-bottom: 24px; }
+.header h1 { margin: 0; font-size: 32px; font-weight: 700; }
+.subtitle { color: #637381; margin-top: 6px; }
+.modes { margin-top: 14px; display: flex; gap: 10px; justify-content: center; }
+.pill { padding: 8px 14px; border-radius: 999px; border: 1px solid #d0d7de; background: #fff; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+.pill.on { background: #2ecc71; color: #fff; border-color: #2ecc71; }
+.warn { color: #d35400; font-size: 12px; margin-top: 8px; }
+.section { margin-top: 24px; }
+.card { border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.row { display: flex; align-items: center; gap: 12px; }
+textarea { flex: 1; width: 100%; border: 1px solid #e5e7eb; border-radius: 8px; padding: 8px; }
+.or { color: #8898aa; }
+.primary { margin-top: 12px; padding: 10px 14px; background: #409eff; color: #fff; border: none; border-radius: 8px; cursor: pointer; box-shadow: 0 2px 6px rgba(64,158,255,0.3); }
+.status-item { display: flex; align-items: center; gap: 8px; margin: 6px 0; }
+.dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; }
+.dot.green { background: #2ecc71; }
+.kv { display: flex; gap: 6px; padding: 6px 0; }
+.actions { display: flex; gap: 10px; margin-top: 10px; }
 .error { color: #c0392b; margin-top: 8px; }
 .code { background: #fafafa; }
-pre { background: #f0f0f0; padding: 8px; border-radius: 6px; overflow: auto; }
+pre { background: #f0f2f5; padding: 10px; border-radius: 8px; overflow: auto; border: 1px solid #e5e7eb; }
 </style>
