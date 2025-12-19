@@ -1,5 +1,6 @@
 {
-  "name": "vite-vue-template",
+  "name": "edge-privacy-gateway",
+  "entry": "edge/api/gateway.ts",
   "installCommand": "npm install",
   "assets": {
     "directory": "./dist",
